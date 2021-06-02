@@ -1,0 +1,7 @@
+{
+  "app": {
+    "logging": {
+      "outputfile": "SuperBank_winston.log"
+    }
+  }
+}
