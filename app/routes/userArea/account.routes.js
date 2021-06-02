@@ -1,7 +1,8 @@
 module.exports = app => {
-    const model = require("../models/account.model");
-    const controller = require("../controllers/userArea/account.controller.js");
-    const authMiddleware = require("../../middlewares/authMiddleware.js");
+    const model = require("../../models/userArea/account.model");
+    const controller = require("../../controllers/userArea/account.controller");
+    const authMiddleware = require("../../../middlewares/authMiddleware");
+    const accessCheckMiddleware = require("../../../middlewares/accessCheckMiddleware");
 
     var router = require("express").Router();
 

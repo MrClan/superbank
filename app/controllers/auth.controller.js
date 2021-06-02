@@ -47,7 +47,7 @@ exports.create = async (req, res) => {
 
             const newToken = generateAccessToken({
                 id: user._id.toString(),
-                access: 'user'
+                access: user.isAdmin ? 'admin' : 'user'
             });
 
             await saveAuthEntry(new Auth({

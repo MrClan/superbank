@@ -25,10 +25,11 @@ app.get("/", (req, res) => {
     res.json({ message: "Api up." });
 });
 
-require("./app/routes/user.routes")(app);
-require("./app/routes/transaction.routes")(app);
-require("./app/routes/account.routes")(app);
 require("./app/routes/auth.routes")(app);
+require("./app/routes/userArea/user.routes")(app);
+require("./app/routes/userArea/transaction.routes")(app);
+require("./app/routes/userArea/account.routes")(app);
+require("./app/routes/adminArea/userManagement.routes")(app);
 
 const elog = expressWinston.logger({
     transports: [

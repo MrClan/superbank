@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const requestValidator = require("../../middlewares/requestValidator");
+const requestValidator = require("../../../middlewares/requestValidator");
 
 module.exports.model = mongoose => {
     var schema = mongoose.Schema(

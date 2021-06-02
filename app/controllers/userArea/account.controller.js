@@ -52,7 +52,7 @@ exports.changeActiveStatus = async (req, res) => {
 
     account.isActive = req.body.isActive;
     await account.save();
-    return res.status(204).send();
+    return res.sendStatus(204);
 };
 
 exports.deleteAccount = async (req, res) => {
@@ -66,5 +66,5 @@ exports.deleteAccount = async (req, res) => {
     }
 
     await account.deleteOne();
-    return res.status(204).send();
+    return res.sendStatus(204);
 };

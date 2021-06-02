@@ -1,11 +1,11 @@
-const authMiddleware = require("../../middlewares/authMiddleware.js");
-const accessCheckMiddleware = require("../../middlewares/accessCheckMiddleware");
+const authMiddleware = require("../../../middlewares/authMiddleware");
+const accessCheckMiddleware = require("../../../middlewares/accessCheckMiddleware");
 
 module.exports = app => {
-    const transferController = require("../controllers/userArea/transfer.controller.js");
-    const depositController = require("../controllers/userArea/deposit.controller.js");
-    const withdrawController = require("../controllers/userArea/withdraw.controller.js");
-    const model = require("../models/transaction.model");
+    const transferController = require("../../controllers/userArea/transfer.controller.js");
+    const depositController = require("../../controllers/userArea/deposit.controller.js");
+    const withdrawController = require("../../controllers/userArea/withdraw.controller.js");
+    const model = require("../../models/userArea/transaction.model");
 
     var router = require("express").Router();
 
