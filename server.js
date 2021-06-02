@@ -13,7 +13,7 @@ dotenv.config();
 const app = express();
 
 var corsOptions = {
-    origin: "http://localhost:3000"
+    origin: "http://localhost:8080"
 };
 
 app.use(cors(corsOptions));
@@ -22,6 +22,9 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.get("/", (req, res) => {
+    res.json({ message: "Api up." });
+});
+app.get("/api/healthcheck", (req, res) => {
     res.json({ message: "Api up." });
 });
 

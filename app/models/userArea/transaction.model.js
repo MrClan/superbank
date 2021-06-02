@@ -1,3 +1,4 @@
+const moment = require("moment");
 const Joi = require("joi");
 const requestValidator = require("../../../middlewares/requestValidator");
 
@@ -19,6 +20,7 @@ module.exports.model = mongoose => {
     schema.method("toJSON", function () {
         const { __v, _id, ...object } = this.toObject();
         object.id = _id;
+        object.formattedCompletionDate = moment.utc(object.completedOn).local().format();
         return object;
     });
 

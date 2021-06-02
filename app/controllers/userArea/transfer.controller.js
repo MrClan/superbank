@@ -23,8 +23,8 @@ exports.transfer = async (req, res) => {
         return res.status(404).send("One or more accounts does not exist");
     }
 
-    let srcAccount = accounts[0];
-    let targetAccount = accounts[1];
+    let srcAccount = accounts.filter(acc => acc.accountNo == req.body.srcAccountNo)[0];
+    let targetAccount = accounts.filter(acc => acc.accountNo == req.body.targetAccountNo)[0];
 
     if (srcAccount.userId !== req.user.id) {
         logger.warn("Unauthorized attempt to transfer");

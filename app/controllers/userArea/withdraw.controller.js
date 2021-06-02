@@ -30,7 +30,7 @@ exports.withdraw = async (req, res) => {
 
     if (account.balance < req.body.amount) {
         logger.warn("Insufficient balance");
-        return res.status(403).send("Unauthorized");
+        return res.status(403).send({ message: "Insufficient balance" });
     }
 
     const session = await mongoose.startSession();

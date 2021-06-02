@@ -8,7 +8,7 @@ function requestValidator(req, res, next, schema) {
     };
     const { error, value } = schema.validate(req.body, options);
     if (error) {
-        res.status(400).send({ validationErrors: error.details.map(x => x.message).join(', ') });
+        res.status(400).send({ message: error.details.map(x => x.message).join(', ') });
         return;
     } else {
         console.log(value);

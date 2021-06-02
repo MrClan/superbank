@@ -5,9 +5,16 @@ module.exports = app => {
     const transferController = require("../../controllers/userArea/transfer.controller.js");
     const depositController = require("../../controllers/userArea/deposit.controller.js");
     const withdrawController = require("../../controllers/userArea/withdraw.controller.js");
+    const transactionController = require("../../controllers/userArea/transaction.controller.js");
     const model = require("../../models/userArea/transaction.model");
 
     var router = require("express").Router();
+
+    router.get(
+        "/",
+        authMiddleware,
+        async (req, res, next) => accessCheckMiddleware(req, res, next, 'user'),
+        async (req, res) => await transactionController.getAll(req, res));
 
     router.post(
         "/deposit",
