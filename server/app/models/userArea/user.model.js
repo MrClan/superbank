@@ -15,7 +15,7 @@ module.exports.model = mongoose => {
     );
 
     schema.method("toJSON", function () {
-        const { __v, _id, password, isAdmin, ...object } = this.toObject();
+        const { __v, _id, password, ...object } = this.toObject();
         object.id = _id;
         return object;
     });

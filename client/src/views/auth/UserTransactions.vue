@@ -98,7 +98,9 @@
                               ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
                               : 'bg-emerald-800 text-emerald-300 border-emerald-700',
                           ]"
-                        ></th>
+                        >
+                          Comment
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -161,6 +163,11 @@
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
                           {{ t.formattedCompletionDate }}
+                        </td>
+                        <td
+                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+                        >
+                          {{ t.comment }}
                         </td>
                       </tr>
                     </tbody>

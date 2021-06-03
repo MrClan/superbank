@@ -9,7 +9,7 @@ module.exports = app => {
     router.get(
         "/",
         authMiddleware,
-        async (req, res, next) => accessCheckMiddleware(req, res, next, 'user'),
+        async (req, res, next) => accessCheckMiddleware(req, res, next, 'user|admin'),
         async (req, res) => await users.findById(req, res));
 
     router.post("/", user.validator.validateUserCreation, async (req, res) => await users.create(req, res));

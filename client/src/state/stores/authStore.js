@@ -14,7 +14,7 @@ export default {
         },
         clearState(state) {
             state.token = null;
-            window.localStorage.setItem('auth:token', token);
+            window.localStorage.setItem('auth:token', null);
             state.currentUser = null;
             window.localStorage.setItem('auth:currentUser', null);
         }

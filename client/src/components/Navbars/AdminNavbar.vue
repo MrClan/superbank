@@ -1,50 +1,79 @@
 <template>
-  <!-- Navbar -->
   <nav
-    class="absolute top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4"
+    class="top-0 absolute z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg"
   >
     <div
-      class="w-full mx-autp items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4"
+      class="container px-4 mx-auto flex flex-wrap items-center justify-between"
     >
-      <!-- Brand -->
-      <a
-        class="text-white text-sm uppercase hidden lg:inline-block font-semibold"
-        href="javascript:void(0)"
+      <div
+        class="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start"
       >
-        Dashboard
-      </a>
-      <!-- Form -->
-      <form
-        class="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3"
+        <router-link
+          class="text-white text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"
+          to="/admin"
+        >
+          Super Bank
+        </router-link>
+        <button
+          class="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
+          type="button"
+          v-on:click="setNavbarOpen"
+        >
+          <i class="text-white fas fa-bars"></i>
+        </button>
+      </div>
+      <div
+        class="lg:flex flex-grow items-center bg-white lg:bg-opacity-0 lg:shadow-none"
+        :class="[navbarOpen ? 'block rounded shadow-lg' : 'hidden']"
+        id="example-navbar-warning"
       >
-        <div class="relative flex w-full flex-wrap items-stretch">
-          <span
-            class="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-3"
-          >
-            <i class="fas fa-search"></i>
-          </span>
-          <input
-            type="text"
-            placeholder="Search here..."
-            class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10"
-          />
-        </div>
-      </form>
-      <!-- User -->
-      <ul class="flex-col md:flex-row list-none items-center hidden md:flex">
-        <user-dropdown />
-      </ul>
+        <ul class="flex flex-col lg:flex-row list-none mr-auto">
+          <li class="flex items-center">
+            <router-link
+              class="lg:text-white lg:hover:text-blueGray-200 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
+              to="/admin/dashboard"
+              @click="navbarOpen = false"
+            >
+              <i
+                class="lg:text-blueGray-200 text-blueGray-400 far fa-file-alt text-lg leading-lg mr-2"
+              />
+              Dashboard
+            </router-link>
+          </li>
+          <li class="flex items-center">
+            <a
+              class="lg:text-white lg:hover:text-blueGray-200 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
+            >
+              <button
+                class="bg-red-500 active:bg-red-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150 text-right"
+                type="button"
+                @click="logout"
+              >
+                Log out
+              </button>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
   </nav>
-  <!-- End Navbar -->
 </template>
-
 <script>
-import UserDropdown from "@/components/Dropdowns/UserDropdown.vue";
-
+import apiHandler from "../../foundation/apiHandler";
 export default {
-  components: {
-    UserDropdown,
+  data() {
+    return {
+      navbarOpen: false,
+    };
+  },
+  methods: {
+    setNavbarOpen: function() {
+      this.navbarOpen = !this.navbarOpen;
+    },
+    logout: function() {
+      apiHandler.logout();
+      this.$router.push("/auth");
+    },
   },
 };
 </script>

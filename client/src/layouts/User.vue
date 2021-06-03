@@ -13,7 +13,7 @@
   </div>
 </template>
 <script>
-import Navbar from "../../components/Navbars/UserNavbar.vue";
+import Navbar from "@/components/Navbars/UserNavbar.vue";
 export default {
   name: "user-dashboard-page",
   components: {

@@ -55,10 +55,7 @@
                             Select Source Account
                           </label>
 
-                          <select
-                            v-model="selectedAccount"
-                            @change="setBalance"
-                          >
+                          <select v-model="selectedAccount">
                             <option
                               v-for="a in accounts"
                               :key="a.id"

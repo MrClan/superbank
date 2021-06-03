@@ -8,8 +8,5 @@ module.exports = app => {
         model.validator.validateAuthLogin,
         async (req, res) => await controller.create(req, res));
 
-    // router.put("/:id", account.validator.validateaccountUpdate, controller.update);
-    // router.delete("/:id", account.validator.validateaccountDelete, controller.delete);
-
     app.use('/api/auth', router);
 };

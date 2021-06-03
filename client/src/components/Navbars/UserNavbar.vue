@@ -95,7 +95,7 @@
               <button
                 class="bg-red-500 active:bg-red-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150 text-right"
                 type="button"
-                @click="logoutUser"
+                @click="logout"
               >
                 Log out
               </button>
@@ -107,6 +107,7 @@
   </nav>
 </template>
 <script>
+import apiHandler from "../../foundation/apiHandler";
 export default {
   data() {
     return {
@@ -117,7 +118,8 @@ export default {
     setNavbarOpen: function() {
       this.navbarOpen = !this.navbarOpen;
     },
-    logoutUser: function() {
+    logout: function() {
+      apiHandler.logout();
       this.$router.push("/auth");
     },
   },

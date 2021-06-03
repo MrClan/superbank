@@ -8,7 +8,7 @@
           <div class="rounded-t mb-0 px-6 py-6">
             <div class="text-center mb-3">
               <h3 class="text-blueGray-700 text-lg font-bold">
-                Admin Login
+                Login
               </h3>
             </div>
             <hr class="mt-6 border-b-1 border-blueGray-300" />
@@ -24,6 +24,8 @@
                 </label>
                 <input
                   type="email"
+                  v-on:keyup.enter="focusPwd"
+                  v-model="email"
                   class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   placeholder="Email"
                 />
@@ -37,28 +39,25 @@
                   Password
                 </label>
                 <input
+                  ref="pwdInput"
                   type="password"
+                  v-on:keyup.enter="login"
+                  v-model="password"
                   class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   placeholder="Password"
                 />
               </div>
               <div>
-                <label class="inline-flex items-center cursor-pointer">
-                  <input
-                    id="customCheckLogin"
-                    type="checkbox"
-                    class="form-checkbox border-0 rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150"
-                  />
-                  <span class="ml-2 text-sm font-semibold text-blueGray-600">
-                    Remember me
-                  </span>
-                </label>
+                <span class="ml-2 text-sm font-semibold text-red-500">
+                  {{ errMsg }}
+                </span>
               </div>
 
               <div class="text-center mt-6">
                 <button
                   class="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                   type="button"
+                  @click="login"
                 >
                   Sign In
                 </button>
@@ -83,15 +82,54 @@
   </div>
 </template>
 <script>
-import github from "@/assets/img/github.svg";
-import google from "@/assets/img/google.svg";
+import apiHandler from "@/foundation/apiHandler";
+import store from "@/state/store";
+import jwt_decode from "jwt-decode";
 
 export default {
   data() {
     return {
-      github,
-      google,
+      email: "",
+      password: "",
+      errMsg: "",
     };
+  },
+  mounted() {
+    apiHandler.logout();
+  },
+  methods: {
+    login: function() {
+      this.errMsg = "";
+      if (!this.email || this.email.trim().length == 0) {
+        this.errMsg = "Email required";
+        return;
+      }
+      if (!this.password || this.password.trim().length == 0) {
+        this.errMsg = "Password required";
+        return;
+      }
+      const response = apiHandler
+        .login(this.email, this.password)
+        .then((response) => {
+          try {
+            const decodedToken = jwt_decode(store.state.token);
+            if (decodedToken.access === "user") {
+              this.$router.push("/user");
+            } else {
+              this.$router.push("/admin");
+            }
+            throw "Unexpected response from server.";
+          } catch (error) {
+            this.errMsg = `Something went wrong.${error}`;
+          }
+        })
+        .catch((err) => {
+          this.errMsg = err.message ? err.message : err;
+        });
+    },
+    focusPwd: function() {
+      this.$refs.pwdInput.focus();
+    },
   },
 };
 </script>

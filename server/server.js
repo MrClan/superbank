@@ -5,6 +5,7 @@ const path = require('path');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 const winston = require('winston');
+const logger = require('./app/common/logger');
 const expressWinston = require('express-winston');
 
 dotenv.config();
@@ -15,6 +16,9 @@ const app = express();
 var corsOptions = {
     origin: "http://localhost:8080"
 };
+
+const publicPath = __dirname + "/public";
+app.use(express.static(publicPath));
 
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -50,19 +54,13 @@ const elog = expressWinston.logger({
     ignoreRoute: function (req, res) { return false; }
 });
 app.use(elog);
-//morgan('tiny');
 
-// setup the logger
-
-// create a write stream (in append mode)
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'SuperBank.log'), { flags: 'a' })
 morgan.token('body', (req, res) => JSON.stringify(req.body));
 app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]', accessLogStream));
-//app.use(morgan('combined', { stream: accessLogStream }))
-//app.use(morgan('dev'));
 
 app.use((err, req, res, next) => {
-    //log.error('Error occurred.')
+    logger.error(`Error occurred.${err}`)
     if (res.headersSent) {
         return next(err)
     }

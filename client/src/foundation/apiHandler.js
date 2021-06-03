@@ -1,5 +1,4 @@
 import axios from 'axios';
-import jwt_decode from 'jwt-decode';
 import store from '../state/store';
 
 const apiUrl = "http://localhost:3000/api";
@@ -12,9 +11,10 @@ if (store.state.token) {
     instance.defaults.headers['Authorization'] = `Bearer ${store.state.token}`;
 }
 
-export default {
+const apiHandler = {
     get: instance.get,
     post: instance.post,
+    patch: instance.patch,
     login: (username, password) => {
         const endpoint = '/auth';
         return new Promise((resolve, reject) => {
@@ -26,7 +26,14 @@ export default {
                 .then((response) => {
                     store.commit('setToken', response.data.token);
                     instance.defaults.headers['Authorization'] = `Bearer ${response.data.token}`;
-                    resolve();
+                    apiHandler
+                        .loadUser()
+                        .then(user => {
+                            resolve(user);
+                        })
+                        .catch(userErr => {
+                            reject(userErr);
+                        });
                 })
                 .catch((err) => {
                     reject(err.response.data);
@@ -34,7 +41,7 @@ export default {
         });
     },
     logout: () => {
-        store.commit('clearState');
+        store.commit('clearState', '');
     },
     loadUser: () => {
         const endpoint = '/users';
@@ -53,4 +60,6 @@ export default {
     log: (msg) => {
         console.log(msg);
     }
-}
+};
+
+export default apiHandler;

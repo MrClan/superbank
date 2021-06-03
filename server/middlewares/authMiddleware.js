@@ -8,8 +8,8 @@ module.exports = function authenticateToken(req, res, next) {
     if (token == null) return res.sendStatus(401);
 
     jwt.verify(token, process.env.TOKEN_SALT, (err, user) => {
-        console.log(err);
-        if (err) return res.sendStatus(403);
+        logger.error(err);
+        if (err) return res.sendStatus(401);
         req.user = user;
         req.body.token = token;
         next();

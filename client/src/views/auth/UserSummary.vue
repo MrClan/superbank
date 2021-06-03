@@ -90,7 +90,6 @@
                               </label>
 
                               <input
-                                maxlength="12"
                                 v-model="newAccount.bankName"
                                 class="border-0 px-3 py-4 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 text-semibold"
                                 style="font-size: xx-large"
@@ -136,7 +135,6 @@
                 </div>
               </div>
               <div class="block w-full overflow-x-auto">
-                <!-- Projects table -->
                 <table
                   class="items-center w-full bg-transparent border-collapse"
                 >
@@ -174,13 +172,13 @@
                       </th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody v-if="accounts.length > 0">
                     <tr v-for="a in accounts" :key="a.id">
-                      <th
+                      <td
                         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
                       >
                         {{ a.bankName }}
-                      </th>
+                      </td>
                       <td
                         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                       >
@@ -192,6 +190,14 @@
                         ${{ a.balance }}
                       </td>
                     </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <td
+                      colspan="4"
+                      class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-md text-center whitespace-nowrap p-4"
+                    >
+                      No Accounts added yet.
+                    </td>
                   </tbody>
                 </table>
               </div>
@@ -231,8 +237,7 @@
                   </h6>
 
                   <p class="mt-2 mb-4 text-blueGray-500">
-                    Divide details about your product or agency work into parts.
-                    A paragraph describing a feature will be enough.
+                    Use this view to withdraw money from your account.
                   </p>
                 </div>
               </div>
@@ -258,8 +263,8 @@
                     </button>
                   </h6>
                   <p class="mt-2 mb-4 text-blueGray-500">
-                    Keep you user engaged by providing meaningful information.
-                    Remember that by this time, the user is curious.
+                    Use this view to transfer money between your checking
+                    accounts.
                   </p>
                 </div>
               </div>
@@ -285,8 +290,7 @@
                     </button>
                   </h6>
                   <p class="mt-2 mb-4 text-blueGray-500">
-                    Write a few lines about each one. A paragraph describing a
-                    feature will be enough. Keep you user engaged!
+                    Use this view to deposit money to your account.
                   </p>
                 </div>
               </div>
@@ -303,6 +307,7 @@ export default {
   name: "UserSummary",
   data() {
     return {
+      color: "dark",
       user: {},
       accounts: [],
       newAccount: {
