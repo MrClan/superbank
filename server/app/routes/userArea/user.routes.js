@@ -1,6 +1,6 @@
 module.exports = app => {
     const user = require("../../models/userArea/user.model");
-    const users = require("../../controllers/userArea/user.controller.js");
+    const users = require("../../controllers/userArea/user.controller");
     const authMiddleware = require("../../../middlewares/authMiddleware");
     const accessCheckMiddleware = require("../../../middlewares/accessCheckMiddleware");
 

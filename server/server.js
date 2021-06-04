@@ -7,6 +7,7 @@ const dotenv = require('dotenv');
 const winston = require('winston');
 const logger = require('./app/common/logger');
 const expressWinston = require('express-winston');
+const migration = require("./app/migrations/addDefaultAdmin");
 
 dotenv.config();
 
@@ -77,6 +78,7 @@ db.mongoose
     })
     .then(() => {
         console.log("Connected to the database!");
+        migration.createDefaultAdmin();
     })
     .catch(err => {
         console.log("Cannot connect to the database!", err);
