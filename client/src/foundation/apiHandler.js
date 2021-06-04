@@ -40,6 +40,15 @@ const apiHandler = {
                 });
         });
     },
+    register: (user) => {
+        const endpoint = '/users';
+        return new Promise((resolve, reject) => {
+            instance
+                .post(endpoint, user)
+                .then((response) => resolve(user))
+                .catch((err) => reject(err.response.data));
+        });
+    },
     logout: () => {
         store.commit('clearState', '');
     },

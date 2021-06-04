@@ -66,11 +66,7 @@
           </div>
         </div>
         <div class="flex flex-wrap mt-6 relative">
-          <div class="w-1/2">
-            <a href="javascript:void(0)" class="text-blueGray-200">
-              <small>Forgot password?</small>
-            </a>
-          </div>
+          <div class="w-1/2"></div>
           <div class="w-1/2 text-right">
             <router-link to="/auth/register" class="text-blueGray-200">
               <small>Create new account</small>
