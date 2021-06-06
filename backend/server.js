@@ -1,4 +1,5 @@
 const express = require("express");
+const http = require("http");
 const cors = require("cors");
 const fs = require('fs');
 const path = require('path');
@@ -69,16 +70,29 @@ app.use((err, req, res, next) => {
     res.render('error', { error: err })
 })
 
+const superBankServer = http.createServer(app);
+app.on('dbUp', () => {
+    // set port, listen for requests
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}.`);
+        app.emit('serverUp');
+    });
+});
 
 const db = require("./app/models");
 db.mongoose
-    .connect(db.url, {
+    .connect(
+        process.env.Mode == "test" ?
+            db.connectionStrings.test :
+            db.connectionStrings.default, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
     .then(() => {
         console.log("Connected to the database!");
         migration.createDefaultAdmin();
+        app.emit('dbUp');
     })
     .catch(err => {
         console.log("Cannot connect to the database!", err);
@@ -86,8 +100,4 @@ db.mongoose
     });
 
 
-// set port, listen for requests
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
-});
+module.exports = { superBankServer, app }

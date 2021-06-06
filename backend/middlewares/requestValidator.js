@@ -11,7 +11,6 @@ function requestValidator(req, res, next, schema) {
         res.status(400).send({ message: error.details.map(x => x.message).join(', ') });
         return;
     } else {
-        console.log(value);
         req.body = value;
         next();
     }

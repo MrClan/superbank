@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "env-cmd -f ./.env-test mocha tests/*.js"
   },
   "keywords": [],
   "author": "mrclan",
@@ -15,6 +15,7 @@
     "config": "^3.3.6",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
+    "env-cmd": "^10.1.0",
     "express": "^4.17.1",
     "express-winston": "^4.1.0",
     "joi": "^17.4.0",
@@ -25,5 +26,10 @@
     "morgan": "^1.10.0",
     "shortid": "^2.2.16",
     "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "mocha": "^8.4.0"
   }
 }
