@@ -11,6 +11,12 @@ A REST API and a web site to manage checking accounts.
 6. For admin login, use default admin credentials: 
       `admin@sb.com` / `1234`
 7. App demo at: https://youtu.be/LQlGg6DW3Z4
+8. To run tests: 
+   1. Ensure live db instance is down: `docker compose down`
+   2. Copy `.env-test` file to `backend` folder.
+   3. Start test db instances: `docker compose -f docker-compose-test.yml up`
+   4. `npm test`
+9. That's all.
 
 ## Documentation:
 1. Api documentation: https://documenter.getpostman.com/view/151089/TzY1jGyv
