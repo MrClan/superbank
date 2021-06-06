@@ -3,7 +3,7 @@ const argon2 = require("argon2");
 const _ = require("lodash");
 const User = db.users;
 
-exports.create = async (req, res) => {
+module.exports.create = async (req, res) => {
     const user = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -35,7 +35,7 @@ exports.create = async (req, res) => {
 };
 
 
-exports.update = async (req, res) => {
+module.exports.update = async (req, res) => {
     const user = await User.findOne({ _id: req.params.id });
     if (!user) {
         return res.status(404).send("User does not exist");
@@ -54,7 +54,7 @@ exports.update = async (req, res) => {
 };
 
 
-exports.delete = async (req, res) => {
+module.exports.delete = async (req, res) => {
     const user = await User.findOne({ _id: req.params.id });
     if (!user) {
         return res.status(404).send("User does not exist");
@@ -68,4 +68,4 @@ exports.delete = async (req, res) => {
     return res.sendStatus(204);
 };
 
-exports.findAll = async (req, res) => res.status(200).send(await User.find({}));
+module.exports.findAll = async (req, res) => res.status(200).send(await User.find({}));

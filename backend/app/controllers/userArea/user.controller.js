@@ -3,7 +3,7 @@ const argon2 = require("argon2");
 const _ = require("lodash");
 const User = db.users;
 
-exports.create = async (req, res) => {
+module.exports.create = async (req, res) => {
     const user = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -35,12 +35,12 @@ exports.create = async (req, res) => {
         });
 };
 
-exports.findById = async (req, res) => {
+module.exports.findById = async (req, res) => {
     const user = await User.findOne({ _id: req.user.id });
     res.status(200).send(user);
 };
 
-exports.findByEmail = async (email) => {
+module.exports.findByEmail = async (email) => {
     var condition = { email: { $regex: new RegExp(email), $options: "i" } };
     return await User.findOne(condition);
 };

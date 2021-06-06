@@ -27,9 +27,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-app.get("/", (req, res) => {
-    res.json({ message: "Api up." });
-});
 app.get("/api/healthcheck", (req, res) => {
     res.json({ message: "Api up." });
 });
@@ -40,26 +37,28 @@ require("./app/routes/userArea/transaction.routes")(app);
 require("./app/routes/userArea/account.routes")(app);
 require("./app/routes/adminArea/userManagement.routes")(app);
 
-const elog = expressWinston.logger({
-    transports: [
-        new winston.transports.Console(),
-        new winston.transports.File({ filename: path.join(__dirname, 'SuperBank_Winston.log') })
-    ],
-    format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.json()
-    ),
-    meta: false,
-    msg: "HTTP  ",
-    expressFormat: true,
-    colorize: false,
-    ignoreRoute: function (req, res) { return false; }
-});
-app.use(elog);
+if (process.env.MODE !== "test") {
+    app.use(expressWinston.logger({
+        transports: [
+            new winston.transports.Console(),
+            new winston.transports.File({ filename: path.join(__dirname, 'SuperBank_Winston.log') })
+        ],
+        format: winston.format.combine(
+            winston.format.colorize(),
+            winston.format.json()
+        ),
+        meta: false,
+        msg: "HTTP  ",
+        expressFormat: true,
+        colorize: false,
+        ignoreRoute: function (req, res) { return false; }
+    }));
 
-var accessLogStream = fs.createWriteStream(path.join(__dirname, 'SuperBank.log'), { flags: 'a' })
-morgan.token('body', (req, res) => JSON.stringify(req.body));
-app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]', accessLogStream));
+    var accessLogStream = fs.createWriteStream(path.join(__dirname, 'SuperBank.log'), { flags: 'a' })
+    morgan.token('body', (req, res) => JSON.stringify(req.body));
+    app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]', accessLogStream));
+}
+
 
 app.use((err, req, res, next) => {
     logger.error(`Error occurred.${err}`)
@@ -68,14 +67,16 @@ app.use((err, req, res, next) => {
     }
     res.status(500)
     res.render('error', { error: err })
-})
+});
+
+logger.log(`initializing server app... Mode=${process.env.MODE}`);
 
 const superBankServer = http.createServer(app);
 app.on('dbUp', () => {
     // set port, listen for requests
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}.`);
+        logger.log(`Server is running on port ${PORT}.`);
         app.emit('serverUp');
     });
 });
@@ -83,19 +84,19 @@ app.on('dbUp', () => {
 const db = require("./app/models");
 db.mongoose
     .connect(
-        process.env.Mode == "test" ?
+        process.env.MODE == "test" ?
             db.connectionStrings.test :
             db.connectionStrings.default, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
     .then(() => {
-        console.log("Connected to the database!");
+        logger.log("Connected to the database!");
         migration.createDefaultAdmin();
         app.emit('dbUp');
     })
     .catch(err => {
-        console.log("Cannot connect to the database!", err);
+        logger.log("Cannot connect to the database!", err);
         process.exit();
     });
 

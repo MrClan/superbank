@@ -1,9 +1,10 @@
 const db = require("../models");
 const argon2 = require("argon2");
+const logger = require("../common/logger");
 const User = db.users;
 
-exports.createDefaultAdmin = async () => {
-    console.log('creating default admin user');
+module.exports.createDefaultAdmin = async () => {
+    logger.log('creating default admin user');
     const user = new User({
         firstName: 'admin',
         lastName: 'user',
@@ -16,7 +17,7 @@ exports.createDefaultAdmin = async () => {
     if (!userExists || userExists.length == 0) {
         user
             .save(user)
-            .then(data => { console.log('admin@sb.com created') })
-            .catch(err => console.log(`default admin user creation failed. ${err}`))
+            .then(data => { logger.log('admin@sb.com created') })
+            .catch(err => logger.log(`default admin user creation failed. ${err}`))
     }
 }

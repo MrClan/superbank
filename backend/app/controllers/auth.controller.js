@@ -23,14 +23,14 @@ async function saveAuthEntry(authEntry) {
     }
 }
 
-exports.create = async (req, res) => {
+module.exports.create = async (req, res) => {
 
     // prevent multiple login  attempts after 5 attempts
     const limitDate = moment.utc().subtract(5, 'minutes');
     var condition = { lastAttemptOn: { $gte: limitDate }, email: req.body.email };
     const attemptsInLast5mins = await Auth.countDocuments(condition);
 
-    if (attemptsInLast5mins > 5) {
+    if (attemptsInLast5mins > 5 && process.env.MODE !== "test") {
         return res.status(403).send("Too many login attempts in too short time.");
     }
 

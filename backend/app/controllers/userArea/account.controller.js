@@ -2,7 +2,7 @@ const db = require("../../models");
 const Account = db.accounts;
 const logger = require("../../common/logger");
 
-exports.create = async (req, res) => {
+module.exports.create = async (req, res) => {
     const account = new Account({
         userId: req.user.id,
         accountNo: req.body.accountNo,
@@ -34,13 +34,13 @@ exports.create = async (req, res) => {
         });
 };
 
-exports.findAll = async (req, res) => {
+module.exports.findAll = async (req, res) => {
     const condition = { userId: req.user.id }
     const accounts = await Account.find(condition);
     res.send(accounts);
 };
 
-exports.changeActiveStatus = async (req, res) => {
+module.exports.changeActiveStatus = async (req, res) => {
     const account = await Account.findOne({ accountNo: req.params.id });
     if (!account) {
         return res.status(404).send("Account does not exist");
@@ -55,7 +55,7 @@ exports.changeActiveStatus = async (req, res) => {
     return res.sendStatus(204);
 };
 
-exports.deleteAccount = async (req, res) => {
+module.exports.deleteAccount = async (req, res) => {
     const account = await Account.findOne({ accountNo: req.params.id });
     if (!account) {
         return res.status(404).send("Account does not exist");

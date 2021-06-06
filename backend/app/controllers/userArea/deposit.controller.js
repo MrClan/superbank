@@ -5,7 +5,7 @@ const Account = db.accounts;
 const logger = require("../../common/logger");
 const mongoose = require("mongoose");
 
-exports.deposit = async (req, res) => {
+module.exports.deposit = async (req, res) => {
     const transaction = new Transaction({
         userId: req.user.id,
         srcAccountNo: '',

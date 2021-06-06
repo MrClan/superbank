@@ -1,4 +1,5 @@
-const config = require("config")
+const config = require("config");
+const debug = require("debug")("*");
 
 const { createLogger, format, transports } = require('winston');
 const { combine, splat, timestamp, printf } = format;
@@ -24,4 +25,11 @@ const logger = createLogger({
         new transports.File({ filename: config.get("app.logging.outputfile"), level: 'debug' }),
     ]
 });
-module.exports = logger
+module.exports = {
+    log: (msg)=> {
+        debug(msg);
+        logger.debug( msg);
+    },
+    error: ()=> logger.error,
+    warn: ()=> logger.warn
+}
